@@ -4,10 +4,18 @@
 #include "Player/AuraPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+}
+
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -55,5 +63,71 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if(!CursorHit.bBlockingHit) return;
+
+	LastActor = CurrentActor;
+	//if this cast succeeds, then the hit result implements the IEnemyInterface
+	//if this cast fails, the result is nullptr
+	CurrentActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	/**
+	 * Line trace from cursor. There are several scenarios:
+	 * 1. LastActor is null and CurrentActor is null
+	 *		- Do nothing
+	 * 2. LastActor is null and CurrentActor is valid
+	 *		- Highlight CurrentActor
+	 * 3. LastActor is valid and CurrentActor is null
+	 *		- Unhighlight LastActor
+	 * 4. LastActor is valid and CurrentActor is valid, but LastActor != CurrentActor
+	 *		- Unhighlight LastActor
+	 *		- Highlight CurrentActor
+	 * 5. LastActor is valid and CurrentActor is valid, and LastActor == CurrentActor
+	 *		- Do nothing
+	 */
+
+	if(LastActor == nullptr)
+	{
+		if(CurrentActor == nullptr)
+		{
+			//Case 1
+			//Do nothing
+		}
+		else
+		{
+			//Case 2
+			//Highlight CurrentActor
+			CurrentActor->HighlightActor();
+		}
+	}
+	else
+	{
+		if(CurrentActor == nullptr)
+		{
+			//Case 3
+			//Unhighlight LastActor
+			LastActor->UnHighlightActor();
+		}
+		else
+		{
+			if(LastActor != CurrentActor)
+			{
+				//Case 4
+				//Unhighlight LastActor, highlight CurrentActor
+				LastActor->UnHighlightActor();
+				CurrentActor->HighlightActor();
+			}
+			else
+			{
+				//Case 5
+				//Do nothing
+			}
+		}
 	}
 }

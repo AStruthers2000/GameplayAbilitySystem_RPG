@@ -7,6 +7,8 @@
 #include "Interaction/EnemyInterface.h"
 #include "AuraEnemy.generated.h"
 
+
+
 /**
  * 
  */
@@ -16,7 +18,15 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 	GENERATED_BODY()
 
 public:
+	AAuraEnemy();
+	
 	//override from IEnemyInterface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bHighlighted = false;
+
+private:
+	void ToggleRenderDepth(USkeletalMeshComponent *SKM);
 };
