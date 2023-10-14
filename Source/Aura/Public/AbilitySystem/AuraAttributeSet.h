@@ -4,7 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
+#include "AbilitySystemComponent.h"
 #include "AuraAttributeSet.generated.h"
+
+/**
+ * Attribute accessors macro that sets up the getters, setter, and initter for each attribute.
+ * We do this so that instead of having to write out each of the four lines in this macro,
+ * we can just call this once and it will set up all four functions for us in one line.
+ * This macro is included on AttributeSet.h with more comments and information. We can
+ * see this by right-clicking on any one of the GAMEPLAYATTRIBUTE_ lines, go to definition
+ * or declaration, and then scrolling up a bit to see this macro and more information.
+ */
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 /**
  * We could have multiple AttributeSets that each have different Attributes,
@@ -42,6 +57,7 @@ public:
 	/** Health Attribute **/
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category="Character Attributes|Vital Attributes")
 	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health);
 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData &OldHealth) const;
@@ -50,6 +66,7 @@ public:
 	/** MaxHealth Attribute **/
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category="Character Attributes|Vital Attributes")
 	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth);
 
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData &OldMaxHealth) const;
@@ -58,6 +75,7 @@ public:
 	/** Mana Attribute **/
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category="Character Attributes|Vital Attributes")
 	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana);
 
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData &OldMana) const;
@@ -66,7 +84,8 @@ public:
 	/** MaxMana Attribute **/
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category="Character Attributes|Vital Attributes")
 	FGameplayAttributeData MaxMana;
-
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
+	
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData &OldMaxMana) const;
 };
