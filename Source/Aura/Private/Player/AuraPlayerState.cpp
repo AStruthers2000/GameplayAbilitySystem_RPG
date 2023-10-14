@@ -45,7 +45,7 @@ AAuraPlayerState::AAuraPlayerState()
 	 *
 	 *	Notes:
 	 *		- For Mixed replication mode:
-	 *			- the OwnerActor's Owner must be the Controller. For Pawns,
+	 *			- The OwnerActor's Owner must be the Controller. For Pawns,
 	 *			  this is set automatically in PossessedBy().
 	 *			- The PlayerState's Owner is automatically set to the Controller
 	 *			- Therefore, if your OwnerActor is not the PlayerState, and you use Mixed
