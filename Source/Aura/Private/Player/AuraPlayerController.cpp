@@ -25,12 +25,13 @@ void AAuraPlayerController::BeginPlay()
 
 	//Will halt execution if this condition is false (i.e. AuraContext == nullptr)
 	check(AuraContext);
-	auto *Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 
 	//add the mapping context to the input subsystem
-	check(Subsystem);
-	Subsystem->AddMappingContext(AuraContext, 0);
-
+	if(auto *Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		Subsystem->AddMappingContext(AuraContext, 0);
+	}
+	
 	//don't hide cursor
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
