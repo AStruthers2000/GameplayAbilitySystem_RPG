@@ -92,42 +92,9 @@ void AAuraPlayerController::CursorTrace()
 	 *		- Do nothing
 	 */
 
-	if(LastActor == nullptr)
+	if(CurrentActor != LastActor)
 	{
-		if(CurrentActor == nullptr)
-		{
-			//Case 1
-			//Do nothing
-		}
-		else
-		{
-			//Case 2
-			//Highlight CurrentActor
-			CurrentActor->HighlightActor();
-		}
-	}
-	else
-	{
-		if(CurrentActor == nullptr)
-		{
-			//Case 3
-			//Unhighlight LastActor
-			LastActor->UnHighlightActor();
-		}
-		else
-		{
-			if(LastActor != CurrentActor)
-			{
-				//Case 4
-				//Unhighlight LastActor, highlight CurrentActor
-				LastActor->UnHighlightActor();
-				CurrentActor->HighlightActor();
-			}
-			else
-			{
-				//Case 5
-				//Do nothing
-			}
-		}
+		if(LastActor) LastActor->ToggleHighlightActor();
+		if(CurrentActor) CurrentActor->ToggleHighlightActor();
 	}
 }

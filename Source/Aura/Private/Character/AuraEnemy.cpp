@@ -25,6 +25,12 @@ void AAuraEnemy::UnHighlightActor()
 	ToggleRenderDepth(Weapon);
 }
 
+void AAuraEnemy::ToggleHighlightActor()
+{
+	ToggleRenderDepth(GetMesh());
+	ToggleRenderDepth(Weapon);
+}
+
 void AAuraEnemy::ToggleRenderDepth(USkeletalMeshComponent* SKM)
 {
 	const bool bRenderCustom = SKM->bRenderCustomDepth;

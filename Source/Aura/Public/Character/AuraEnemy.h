@@ -23,6 +23,7 @@ public:
 	//override from IEnemyInterface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	virtual void ToggleHighlightActor() override;
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlighted = false;

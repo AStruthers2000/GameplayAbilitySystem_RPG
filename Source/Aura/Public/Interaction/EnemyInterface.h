@@ -25,5 +25,5 @@ public:
 	//pure virtual function, required to implement this function on any class that implements this interface
 	virtual void HighlightActor() = 0;
 	virtual void UnHighlightActor() = 0;
-	
+	virtual void ToggleHighlightActor() = 0;
 };
