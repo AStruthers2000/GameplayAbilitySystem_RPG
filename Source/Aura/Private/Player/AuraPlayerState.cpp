@@ -19,10 +19,31 @@ AAuraPlayerState::AAuraPlayerState()
 	 * the player here is a much better idea. 
 	*/
 
+	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 
-	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
+	/**
+	 *		+------------------+-------------------+-------------------------------+
+	 *		| Replication Mode | Use Case	       | Description				   |
+	 *		+------------------+-------------------+-------------------------------+
+	 *		| Full			   | Single Player     | Gameplay Effects are		   |
+	 *		|				   |			       | replicated to all clients	   |
+	 *		+------------------+-------------------+-------------------------------+
+	 *		| Mixed			   | Multiplayer,	   | Gameplay Effects are		   |
+	 *		|				   | Player-Controlled | replicated to the owning      |
+	 *		|				   |				   | client only. Gameplay Cues    |
+	 *		|				   |				   | and Gameplay Tags replicated. |
+	 *		|				   |				   | to all clients.			   |
+	 *		+------------------+-------------------+-------------------------------+
+	 *		| Minimal		   | Multiplayer,	   | Gameplay Effects are		   |
+	 *		|				   | AI-Controlled	   | NOT replicated. Gameplay	   |
+	 *		|				   |				   | Cues and Gameplay Tags		   |
+	 *		|				   |				   | replicated to all clients	   |
+	 *		+------------------+-------------------+-------------------------------+
+	 */
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	
 	
 	//how often will the server try and update clients
 	//as changes happen on the server for the player state, the server sends updates to all clients
