@@ -31,9 +31,9 @@ void AAuraEnemy::ToggleHighlightActor()
 	ToggleRenderDepth(Weapon);
 }
 
-void AAuraEnemy::ToggleRenderDepth(USkeletalMeshComponent* SKM)
+void AAuraEnemy::ToggleRenderDepth(USkeletalMeshComponent* HoveredSkeletalMesh)
 {
-	const bool bRenderCustom = SKM->bRenderCustomDepth;
-	SKM->SetRenderCustomDepth(!bRenderCustom);
-	SKM->SetCustomDepthStencilValue(!bRenderCustom ? STENCIL_DEPTH_HIGHLIGHT : STENCIL_DEPTH_BLANK);
+	const bool bRenderCustom = HoveredSkeletalMesh->bRenderCustomDepth;
+	HoveredSkeletalMesh->SetRenderCustomDepth(!bRenderCustom);
+	HoveredSkeletalMesh->SetCustomDepthStencilValue(!bRenderCustom ? STENCIL_DEPTH_HIGHLIGHT : STENCIL_DEPTH_BLANK);
 }

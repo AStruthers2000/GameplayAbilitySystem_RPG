@@ -29,5 +29,5 @@ public:
 	bool bHighlighted = false;
 
 private:
-	void ToggleRenderDepth(USkeletalMeshComponent *SKM);
+	void ToggleRenderDepth(USkeletalMeshComponent *HoveredSkeletalMesh);
 };

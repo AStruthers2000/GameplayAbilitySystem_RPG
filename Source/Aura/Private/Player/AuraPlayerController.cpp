@@ -9,6 +9,7 @@
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+	LastActor = nullptr, CurrentActor = nullptr;
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)
