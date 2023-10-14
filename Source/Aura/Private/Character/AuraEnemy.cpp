@@ -18,6 +18,14 @@ AAuraEnemy::AAuraEnemy()
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 }
 
+void AAuraEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	check(AbilitySystemComponent);
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+}
+
 void AAuraEnemy::HighlightActor()
 {
 	//if(GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Highlighting actor: %s"), *GetActorNameOrLabel()));
@@ -39,6 +47,8 @@ void AAuraEnemy::ToggleHighlightActor()
 	ToggleRenderDepth(GetMesh());
 	ToggleRenderDepth(Weapon);
 }
+
+
 
 void AAuraEnemy::ToggleRenderDepth(USkeletalMeshComponent* HoveredSkeletalMesh)
 {

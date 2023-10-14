@@ -20,6 +20,7 @@ AAuraPlayerState::AAuraPlayerState()
 	*/
 
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
+	
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 
@@ -41,9 +42,33 @@ AAuraPlayerState::AAuraPlayerState()
 	 *		|				   |				   | Cues and Gameplay Tags		   |
 	 *		|				   |				   | replicated to all clients	   |
 	 *		+------------------+-------------------+-------------------------------+
+	 *
+	 *	Notes:
+	 *		- For Mixed replication mode:
+	 *			- the OwnerActor's Owner must be the Controller. For Pawns,
+	 *			  this is set automatically in PossessedBy().
+	 *			- The PlayerState's Owner is automatically set to the Controller
+	 *			- Therefore, if your OwnerActor is not the PlayerState, and you use Mixed
+	 *			  Replication Mode, you must call SetOwner() on the OwnerActor to set its owner
+	 *			  to the Controller.
 	 */
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
-	
+
+	/**
+	 * InitAbilityActorInfo
+	 * 1. Calling InitAbilityActorInfo must be done after possession (aka the Controller has been set for the Pawn)
+	 *		1a.	For a player controlled character, where the ASC lives on the Pawn itself (not like our case),
+	 *			we could call this from PossessedBy on the pawn (server) and AcknowledgePossession (client)
+	 *		1b. For player controlled character, where the ASC lives on the player state (like our case),
+	 *			we could call PossessedBy on the pawn (server) and OnRep_PlayerState (client).
+	 *			OnRep means this function is a rep-notify, a function that is called as a result
+	 *			of something being replicated. In this case, the player state will be set on the server,
+	 *			which is replicated, which will trigger the OnRep_PlayerState rep-notify, so the client
+	 *			can be sure that the player state has been set and PlayerState is a valid pointer.
+	 * 2. AI controlled character
+	 *		2a. ASC lives on the pawn, we know the ASC is valid as is the controller, so we can call
+	 *			this on BeginPlay
+	 */
 	
 	//how often will the server try and update clients
 	//as changes happen on the server for the player state, the server sends updates to all clients
