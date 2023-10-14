@@ -3,6 +3,9 @@
 
 #include "Player/AuraPlayerState.h"
 
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
+
 AAuraPlayerState::AAuraPlayerState()
 {
 	/**
@@ -16,10 +19,21 @@ AAuraPlayerState::AAuraPlayerState()
 	 * the player here is a much better idea. 
 	*/
 
+	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);
+
+	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 	
 	//how often will the server try and update clients
 	//as changes happen on the server for the player state, the server sends updates to all clients
 	//any replicated variables will be updated at an attempted rate of NetUpdateFrequency
 	//Lyra and Fortnite player state (with ability system component on player state) updates at ~100
 	NetUpdateFrequency = 100.f;
+
+	
+}
+
+UAbilitySystemComponent* AAuraPlayerState::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
