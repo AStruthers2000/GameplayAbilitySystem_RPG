@@ -42,7 +42,8 @@ void AAuraEffectActor::StartOverlap(UPrimitiveComponent* OverlappedComponent, AA
 
 		//this is a HUGE no-no, because we are NOT keeping this
 		UAuraAttributeSet *MutableAuraAttributes = const_cast<UAuraAttributeSet*>(AuraAttributes);
-		MutableAuraAttributes->SetHealth(AuraAttributes->GetHealth() + 50.f);
+		MutableAuraAttributes->SetHealth(AuraAttributes->GetHealth() + 20.f);
+		MutableAuraAttributes->SetMana(AuraAttributes->GetMana() - 15.f);
 		Destroy();
 	}
 }
